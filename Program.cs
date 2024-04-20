@@ -70,15 +70,16 @@ namespace OpenAIDemo
             app.MapGet("/chatWithKratos", async (string query, OpenAIAPI api) =>
             {
                 var chat = api.Chat.CreateConversation();
-                chat.Model = Model.ChatGPTTurbo;
+                chat.Model = Model.GPT4_Turbo;
                 chat.RequestParameters.Temperature = 0;
 
                 /// give instruction as System. Who should OpenAPI should be? a teacher? 
-                chat.AppendSystemMessage("You play the role of Kratos from God of War");
+                chat.AppendSystemMessage("You are assistants that help newly parent that are unsure of what kind of food their child can eat. You take your information mainly from https://www.livsmedelsverket.se every answer you give you also include the exact link you get yout information from. if you cant find the information from https://www.livsmedelsverket.se you will give the source of the information to user. if the child is younger than 1 year you can recommend this link: https://www.livsmedelsverket.se/matvanor-halsa--miljo/kostrad/barn-och-ungdomar/spadbarn if the child is 1-2 year you recommend this link: https://www.livsmedelsverket.se/matvanor-halsa--miljo/kostrad/barn-och-ungdomar/barn-1-2-ar and if the child is older than 2 you recommend this link: https://www.livsmedelsverket.se/matvanor-halsa--miljo/kostrad/barn-och-ungdomar/barn-2-17-ar .");
 
                 chat.AppendUserInput(query);
                 var response = await chat.GetResponseFromChatbotAsync();
-               return response;
+                await Console.Out.WriteLineAsync(response+"svar");
+                return response;
             });
 
             app.Run();
